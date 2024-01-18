@@ -4,6 +4,7 @@ from typing import Optional
 from langchain_community.chat_message_histories import RedisChatMessageHistory
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.runnables.history import (
     RunnableWithMessageHistory,
     RunnableLambda,
@@ -27,14 +28,16 @@ def main():
         model="models/embedding-001", google_api_key=api_key
     )
 
-    loader = PyPDFLoader("data/HD - Generator - Akhmad Rizki Triandani.pdf")
-    pages = loader.load()
+    # loader = PyPDFLoader("data/HD - Generator - Akhmad Rizki Triandani.pdf")
+    loader = PyPDFLoader("data/HD - Manifesting Generator - Indah (1).pdf")
+    pages = loader.load_and_split()
 
-    # vectorstore = FAISS.from_documents(pages, embedding=embedding)
 
-    # vectorstore.save_local("data/vectorstore")
+    vectorstore = FAISS.from_documents(pages, embedding=embedding)
 
-    vectorstore = FAISS.load_local("data/vectorstore", embeddings=embedding)
+    # vectorstore.save_local("data/indah")
+
+    # vectorstore = FAISS.load_local("data/indah", embeddings=embedding)
 
     llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
 
@@ -57,7 +60,7 @@ def main():
     )
 
     for chunk in chain.stream(
-        "apa tipe human design saya? dan apa saja karakteristiknya?"
+        "apa tipe human design saya? dan apa saja karakteristiknya? bagaimana saya bisa memanfaatkan human design saya untuk pekerjaan saya sebagai seorang digital marketer?",
     ):
         sys.stdout.write(chunk)
         sys.stdout.flush()
