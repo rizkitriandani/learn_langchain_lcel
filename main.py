@@ -1,5 +1,4 @@
 from langchain.prompts import PromptTemplate
-from getpass import getpass
 from langchain_google_genai import GoogleGenerativeAI
 from dotenv import load_dotenv
 import os, sys
