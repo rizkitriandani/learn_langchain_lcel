@@ -20,10 +20,15 @@ llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
 
 chain = prompt | llm
 
-question = "Make a poem about Jakarta in max payne style."
+while True:
+    question = input("Please enter your question or 'exit' to quit: ")
 
-for chunk in llm.stream("Tell me a short poem about snow"):
-    sys.stdout.write(chunk)
-    sys.stdout.flush()
-    
+    if question.lower() == "exit":
+        break
+
+    for chunk in llm.stream(question):
+        sys.stdout.write(chunk)
+        sys.stdout.flush()
+
+
 # print(chain.invoke({"question": question}))
