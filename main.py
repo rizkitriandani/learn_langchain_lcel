@@ -15,7 +15,6 @@ template = """Question: {question}
 Answer: Let's think step by step."""
 prompt = PromptTemplate.from_template(template)
 
-llm = GoogleGenerativeAI(model="gemini-pro", google_api_key=api_key)
 
 chain = prompt | llm
 
@@ -28,6 +27,7 @@ while True:
     for chunk in llm.stream(question):
         sys.stdout.write(chunk)
         sys.stdout.flush()
+    sys.stdout.write("\n")
 
 
 # print(chain.invoke({"question": question}))
